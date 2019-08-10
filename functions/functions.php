@@ -128,4 +128,43 @@
         $signin = "UPDATE users SET last_signin = (SELECT CURRENT_TIMESTAMP()) WHERE username = '$username'";
         $GLOBALS['conn']->query($signin);
     }
+
+    function fetchTodo($user_id)
+    {
+        $sql = "SELECT * FROM users WHERE user_id = $user_id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function addTodo($user_id, $todo_title, $todo_description)
+    {
+        $sql = "INSERT INTO todo (todo_title, todo_description, todo_status, user_id, created_date)
+                VALUES('$todo_title'
+                , '$todo_description'
+                , 'backlog'
+                , '$user_id'
+                , (SELECT CURRENT_TIMESTAMP)
+                )";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function checkTodo($todo_id)
+    {
+        $sql = "SELECT * FROM todo WHERE todo_id = $todo_id";
+        if ($GLOBALS['conn']->query($sql)->num_rows > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    function setEditTodo($todo_id)
+    {
+        $sql = "SELECT * FROM todo WHERE todo_id = $todo_id";
+        $result = $GLOBALS['conn']->query($sql);
+        while ($row = $result->fetch_assoc())
+        {
+            $_SESSION['todo_title'] = $row['todo_title'];
+            $_SESSION['todo_description'] = $row['todo_description'];
+        }
+    }
 ?>
