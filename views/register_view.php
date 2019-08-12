@@ -12,7 +12,7 @@
         <title>Todolist Register</title>
     </head>
     <body>
-        <form action="../process/register_process.php" method="POST">
+        <form action="../process/register.php" method="POST">
             Username: <input type="text" name="username" required> <br>
             Email: <input type="email" name="email" required> <br>
             Password: <input type="password" name="password" required> <br>

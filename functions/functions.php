@@ -2,6 +2,14 @@
     session_start();
     require "../conn/conn.php";
 
+    function checkLogin()
+    {
+        if (!(isset($_SESSION['user_id'])))
+        {
+            header("Location: ../process/logout.php");
+        }
+    }
+
     function checkEmail($email)
     {
         $sql = "SELECT * FROM users WHERE email = '$email'";
@@ -131,7 +139,7 @@
 
     function fetchTodo($user_id)
     {
-        $sql = "SELECT * FROM users WHERE user_id = $user_id";
+        $sql = "SELECT * FROM todo WHERE user_id = $user_id";
         return $GLOBALS['conn']->query($sql);
     }
 
@@ -149,22 +157,79 @@
 
     function checkTodo($todo_id)
     {
-        $sql = "SELECT * FROM todo WHERE todo_id = $todo_id";
+        $sql = "SELECT todo_id FROM todo WHERE todo_id = $todo_id";
+        $sql2 = "SELECT user_id FROM todo WHERE todo_id = $todo_id";
+        $result = $GLOBALS['conn']->query($sql2);
         if ($GLOBALS['conn']->query($sql)->num_rows > 0)
         {
-            return true;
+            while ($row = $result->fetch_assoc())
+            {
+                if ($row['user_id'] == $_SESSION['user_id'])
+                {
+                    return true;
+                }
+            }
         }
         return false;
     }
 
     function setEditTodo($todo_id)
     {
-        $sql = "SELECT * FROM todo WHERE todo_id = $todo_id";
+        $sql = "SELECT todo_id, todo_title, todo_description FROM todo WHERE todo_id = $todo_id";
         $result = $GLOBALS['conn']->query($sql);
         while ($row = $result->fetch_assoc())
         {
-            $_SESSION['todo_title'] = $row['todo_title'];
-            $_SESSION['todo_description'] = $row['todo_description'];
+            $_SESSION['edit_todo_id'] = $row['todo_id'];
+            $_SESSION['edit_todo_title'] = $row['todo_title'];
+            $_SESSION['edit_todo_description'] = $row['todo_description'];
         }
+    }
+
+    function editTodo($todo_id, $todo_title, $todo_description)
+    {
+        $sql = "UPDATE todo SET todo_title = '$todo_title', todo_description = '$todo_description' WHERE todo_id = $todo_id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function verifyUserTodo($todo_id)
+    {
+        $sql = "SELECT user_id FROM todo WHERE todo_id";
+        $result = $GLOBALS['conn']->query($sql);
+        while ($row = $result->fetch_assoc())
+        {
+            if ($row['user_id'] == $_SESSION['user_id'])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function deleteTodo($todo_id)
+    {
+        $sql = "DELETE FROM todo WHERE todo_id = $todo_id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function setAddList($todo_id)
+    {
+        $sql = "SELECT user_id FROM todo WHERE todo_id = $todo_id";
+        $result = $GLOBALS['conn']->query($sql);
+        if ($result->fetch_assoc() > 0)
+        {
+            while ($row = $result->fetch_assoc())
+            {
+                $_SESSION['addlist_userid'] = $row['user_id'];
+                $_SESSION['addlist_todoid'] = $todo_id;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function addList($list_name)
+    {
+        $sql = "SELECT todo_id, user_id FROM todo_id WHERE ";
+        return true;
     }
 ?>

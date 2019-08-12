@@ -44,7 +44,7 @@
         <title>Todolist Login</title>
     </head>
     <body>
-        <form action="../process/login_process.php" method="POST">
+        <form action="../process/login.php" method="POST">
             <label for="this"><?php echo $label;?></label><br>
             <input type="<?php echo $input_type ?>" name="<?php echo $input_name ?>" required><br>
             <input type="submit" value="<?php echo $submit_value; ?>">
