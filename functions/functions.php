@@ -164,10 +164,21 @@
         {
             while ($row = $result->fetch_assoc())
             {
-                if ($row['user_id'] == $_SESSION['user_id'])
+                if (isset($_SESSION['adminview_userid']))
                 {
-                    return true;
+                    if ($row['user_id'] == $_SESSION['adminview_userid'])
+                    {
+                        return true;
+                    }
                 }
+                else
+                {
+                    if ($row['user_id'] == $_SESSION['user_id'])
+                    {
+                        return true;
+                    }
+                }
+                
             }
         }
         return false;
@@ -213,9 +224,9 @@
 
     function setAddList($todo_id)
     {
-        $sql = "SELECT user_id FROM todo WHERE todo_id = $todo_id";
+        $sql = "SELECT * FROM todo WHERE todo_id = $todo_id";
         $result = $GLOBALS['conn']->query($sql);
-        if ($result->fetch_assoc() > 0)
+        if ($result->num_rows > 0)
         {
             while ($row = $result->fetch_assoc())
             {
@@ -229,7 +240,17 @@
 
     function addList($list_name)
     {
-        $sql = "SELECT todo_id, user_id FROM todo_id WHERE ";
-        return true;
+        $todo = $_SESSION['addlist_todoid'];
+        $user = $_SESSION['addlist_userid'];
+        $sql = "INSERT INTO list(list_name, todo_id, user_id, list_status, created_date) 
+        VALUES('$list_name', $todo, $user, 'inprogress', (SELECT CURRENT_TIMESTAMP))";
+        return $GLOBALS['conn']->query($sql);
     }
+
+    function getList($todo_id)
+    {
+        $sql = "SELECT list_name, list_status FROM list WHERE todo_id = $todo_id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
 ?>
