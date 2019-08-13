@@ -4,7 +4,7 @@
 
     if (isset($_GET['todoid']))
     {
-        if (setTodoProgress($_GET['todoid']))
+        if (setTodoDone($_GET['todoid']))
         {
             $_SESSION['action_message'] = "Successful";
         }

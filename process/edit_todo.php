@@ -31,6 +31,14 @@
         unset($_SESSION['edit_todo_id']);
         unset($_SESSION['edit_todo_title']);
         unset($_SESSION['edit_todo_description']);
-        header("Location: ../views/user_view.php");
+        
+        if ($_SESSION['user_role_id'] == 100)
+        {
+            header("Location: ../views/admin_viewuser_view.php");
+        }
+        else
+        {
+            header("Location: ../views/user_view.php");
+        }
     }
 ?>

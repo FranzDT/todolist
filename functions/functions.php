@@ -1,12 +1,33 @@
 <?php
     session_start();
     require "../conn/conn.php";
+    require_once('../SMTP.php');
+    require_once('../PHPMailer.php');
+    require_once('../Exception.php');
+
+    use \PHPMailer\PHPMailer\PHPMailer;
+    use \PHPMailer\PHPMailer\Exception;
 
     function checkLogin()
     {
         if (!(isset($_SESSION['user_id'])))
         {
             header("Location: ../process/logout.php");
+        }
+    }
+
+    function checkAdmin()
+    {
+        if (!(isset($_SESSION['user_role_id'])))
+        {
+            header("Location: ../process/logout.php");
+        }
+        else
+        {
+            if ($_SESSION['user_role_id'] != 100)
+            {
+                header("Location: ../process/logout.php");
+            }
         }
     }
 
@@ -49,6 +70,7 @@
                 , 0
                 , 200
                 , (SELECT CURRENT_TIMESTAMP))";
+        
         if ($GLOBALS['conn']->query($sql))
         {
             return true;
@@ -58,12 +80,38 @@
 
     function sendVerificationCode($email, $vkey)
     {
-        $subject = "Todolist Email Verification";
-        $message = "<a href='http://localhost/todolist/process/verification_process.php?vkey=$vkey'> Confirm Account</a>";
-        $headers = "From: fst.todolist@yahoo.com \r\n";
-        $headers .= "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        return mail($email, $subject, $message, $headers);
+        $mail=new PHPMailer(true); // Passing `true` enables exceptions
+
+        try {
+            //settings
+            $mail->SMTPDebug=2; // Enable verbose debug output
+            $mail->isSMTP(); // Set mailer to use SMTP
+            $mail->Host='smtp.mail.yahoo.com';
+            $mail->SMTPAuth=true; // Enable SMTP authentication
+            $mail->Username='fst.todolist@yahoo.com'; // SMTP username
+            $mail->Password='qwertyAgent123'; // SMTP password
+            $mail->SMTPSecure='ssl';
+            $mail->Port=465;
+
+            $mail->setFrom('fst.todolist@yahoo.com', 'TodoList App Email Verification');
+
+            //recipient
+            $mail->addAddress($email, $email);     // Add a recipient
+
+            //content
+            $mail->isHTML(true); // Set email format to HTML
+            $mail->Subject='Todolist Email Verification';
+            $mail->Body="<a href='http://localhost/todolist/process/verification_process.php?vkey=$vkey'> Confirm Account</a>";
+            $mail->AltBody='This is the body in plain text for non-HTML mail clients';
+
+            $mail->send();
+
+            return true;
+        } 
+        catch(Exception $e) {
+            return false;
+        }
+
     }
 
     function checkVkey($vkey)
@@ -137,9 +185,21 @@
         $GLOBALS['conn']->query($signin);
     }
 
-    function fetchTodo($user_id)
+    function fetchTodoBacklog($user_id)
     {
-        $sql = "SELECT * FROM todo WHERE user_id = $user_id";
+        $sql = "SELECT * FROM todo WHERE user_id = $user_id AND todo_status = 'backlog'";
+        return $GLOBALS['conn']->query($sql);
+    }
+    
+    function fetchTodoProgress($user_id)
+    {
+        $sql = "SELECT * FROM todo WHERE user_id = $user_id AND todo_status = 'progress'";
+        return $GLOBALS['conn']->query($sql);
+    }
+    
+    function fetchTodoDone($user_id)
+    {
+        $sql = "SELECT * FROM todo WHERE user_id = $user_id AND todo_status = 'done'";
         return $GLOBALS['conn']->query($sql);
     }
 
@@ -249,13 +309,37 @@
 
     function getList($todo_id)
     {
-        $sql = "SELECT list_name, list_status FROM list WHERE todo_id = $todo_id";
+        $sql = "SELECT list_name, list_status, list_id FROM list WHERE todo_id = $todo_id";
         return $GLOBALS['conn']->query($sql);
     }
 
     function setTodoProgress($todo_id)
     {
         $sql = "UPDATE todo SET todo_status ='progress' WHERE todo_id = $todo_id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function setTodoDone($todo_id)
+    {
+        $sql = "UPDATE todo SET todo_status ='done' WHERE todo_id = $todo_id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function setTodoBacklog($todo_id)
+    {
+        $sql = "UPDATE todo SET todo_status ='backlog' WHERE todo_id = $todo_id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function fetchUsers()
+    {
+        $sql = "SELECT user_id, username, email, user_role_id, email_verify, created_date, last_signin FROM users ";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function listDone($list_id)
+    {
+        $sql="UPDATE list SET list_status = 'done' WHERE list_id = $list_id";
         return $GLOBALS['conn']->query($sql);
     }
 ?>

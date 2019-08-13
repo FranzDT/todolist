@@ -2,28 +2,24 @@
     require "../functions/functions.php";
     checkLogin();
 
-    if (isset($_GET['todoid']))
+    if (isset($_GET['listid']))
     {
-        if (setTodoProgress($_GET['todoid']))
+        if (listDone($_GET['list_id']))
         {
-            $_SESSION['action_message'] = "Successful";
+            $_SESSION['action_message']="Update successful";
         }
         else
         {
-            $_SESSION['action_message'] = "Successful";
+            $$_SESSION['action_message']="Update failed";
         }
     }
-    else
-    {
-        $_SESSION['action_message'] = "Successful";
-    }
-
+    
     if ($_SESSION['user_role_id'] == 100)
     {
         header("Location: ../views/admin_viewuser_view.php");
     }
     else
-    {   
+    {
         header("Location: ../views/user_view.php");
     }
 ?>

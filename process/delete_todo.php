@@ -10,19 +10,25 @@
             if (deleteTodo($todo_id))
             {
                 $_SESSION['action_message'] = "Successfully deleted todo <br>";
-                header("Location: ../views/user_view.php");  
             }
             else
             {
                 $_SESSION['error'] = "Failed to delete todo<br>";
-                header("Location: ../views/user_view.php");  
             }
         }
         else
         {
-            $_SESSION['error'] = "Page not found<br>";
-            header("Location: ../views/user_view.php");    
+            $_SESSION['error'] = "Page not found<br>"; 
         }
+    }
+    else
+    {
+        header("Location: ../views/user_view.php");
+    }
+
+    if ($_SESSION['user_role_id'] == 100)
+    {
+        header("Location: ../views/admin_viewuser_view.php");
     }
     else
     {

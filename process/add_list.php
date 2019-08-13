@@ -8,8 +8,7 @@
         if (checkTodo($todo_id))
         {
             if (setAddList($todo_id))
-            {   
-                $_SESSION['action_message'] = "List successfully added. <br>";
+            {             
                 header("Location: ../views/add_list_view.php");
             }
             else
@@ -32,18 +31,40 @@
 
             if (addList($list_name))
             {   
-                header("Location: ../views/user_view.php");
+                die("here");
+                if ($_SESSION['user_role_id'] == 100)
+                {
+                    header("Location: ../views/admin_viewuser_view");
+                }
+                else
+                {
+                    header("Location: ../views/user_view.php");
+                }
             }
             else
             {
                 $_SESSION['error'] = "Something went wrong. Please try again<br>";
-                header("Location: ../views/user_view.php");
+                if ($_SESSION['user_role_id'] == 100)
+                {
+                    header("Location: ../views/admin_viewuser_view");
+                }
+                else
+                {
+                    header("Location: ../views/user_view.php");
+                }
             }
         }
         else
         {
             $_SESSION['error'] = "Something went wrong. Please try again<br>";
-            header("Location: ../views/user_view.php");
+            if ($_SESSION['user_role_id'] == 100)
+                {
+                    header("Location: ../views/admin_viewuser_view");
+                }
+                else
+                {
+                    header("Location: ../views/user_view.php");
+                }
         }
     }
 ?>

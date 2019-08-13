@@ -1,5 +1,4 @@
 <?php
-    session_start();
     require "../conn/conn.php";
     require "../functions/functions.php";
 
@@ -8,6 +7,7 @@
     $password = mysqli_real_escape_string($GLOBALS['conn'], $_POST['password']);
     $password2 = mysqli_real_escape_string($GLOBALS['conn'], $_POST['password2']);
 
+    
     if (checkEmail($email))
     {
         if (checkUsername($username))
@@ -18,37 +18,40 @@
                 $vkey = md5(time().$username);
                 if (registerUser($email, $username, $password, $vkey))
                 {
-
                     if (sendVerificationCode($email, $vkey))
                     {
-
-                        echo $vkey;
-                    }
-                    else
-                    {
-                        echo "fail";
+                        $_SESSION['action_message'] = "Successfully added user";
                     }
                 }
                 else
                 {
-                    echo "fail";
+                    $_SESSION['error'] = "Something went wrong, please try again.";
                 }
             }
             else
             {
                 $_SESSION['error'] = "Password did not match";
-                header("Location: ../views/register_view.php");
             }
         }
         else
         {
             $_SESSION['error'] = "Username is already used. Please use another username";
-            header("Location: ../views/register_view.php"); 
         }
     }
     else
     {
         $_SESSION['error'] = "Email is already registered. Please use another email";
-        header("Location: ../views/register_view.php");
+    }
+
+    if (isset($_SESSION['user_role_id']))
+    {
+        if ($_SESSION['user_role_id'] == 100)
+        {
+            header("Location: ../views/admin_view.php");
+        }
+        else
+        {   
+            header("Location: ../views/register_view.php");
+        }
     }
 ?>

@@ -30,7 +30,14 @@
         {
             setUserDetails($_SESSION['login_username']);
             unset($_SESSION['login_username']);
-            header("Location: ../views/user_view.php");
+            if ($_SESSION['user_role_id'] == 100)
+            {
+                header("Location: ../views/admin_view.php");
+            }
+            else
+            { 
+                header("Location: ../views/user_view.php");
+            }
         }
         else
         {
