@@ -253,4 +253,9 @@
         return $GLOBALS['conn']->query($sql);
     }
 
+    function setTodoProgress($todo_id)
+    {
+        $sql = "UPDATE todo SET todo_status ='progress' WHERE todo_id = $todo_id";
+        return $GLOBALS['conn']->query($sql);
+    }
 ?>
