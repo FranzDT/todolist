@@ -6,6 +6,7 @@
     {
         if (listDone($_GET['list_id']))
         {
+            
             $_SESSION['action_message']="Update successful";
         }
         else
