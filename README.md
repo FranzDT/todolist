@@ -2,7 +2,7 @@ Set-up:
 •Import the database
 
 •Change the email redirect in ../functions/functions.php
->>"$mail->Body= *<a href='http://localhost:8080/todolist/process/verification_process.php?vkey=$vkey'>*
+>>$mail->Body= *<a href=http://localhost:8080/todolist/process/verification_process.php?vkey=$vkey>*
 
 
 # **TODO APP**
