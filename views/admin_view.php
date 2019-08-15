@@ -135,20 +135,11 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['username']; ?></span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 text-uppercase"><?php echo $_SESSION['username']; ?></span>
+                <img class="img-profile rounded-circle" src="../res/admin.png">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
@@ -266,7 +257,7 @@
                         <th>Date Created</th>
                         <th>Last Signin</th>
                         <th>Todo</th>
-                        <th>Edit User</th>
+                        <th>Edit</th>
                         <th>Delete</th>
                       </tr>
                     </thead>
@@ -278,7 +269,7 @@
                         <th>Date Created</th>
                         <th>Last Signin</th>
                         <th>Todo</th>
-                        <th>Edit User</th>
+                        <th>Edit</th>
                         <th>Delete</th>
                       </tr>
                     </tfoot>
@@ -293,8 +284,8 @@
                           <th><?php echo $row['email_verify']; ?></th>
                           <th><?php echo $row['created_date']; ?></th>
                           <th><?php echo $row['last_signin']; ?></th>
-                          <th><a href="../process/admin_viewuser.php?userid=<?php echo $row['user_id']; ?>" >View</a></th>
-                          <th class><a href="#" class="btn btn-primary" role="button"><i class="fas fa-cog"></i></a></th>
+                          <th><a href="../process/admin_viewuser.php?userid=<?php echo $row['user_id']; ?>" ><i class="fas fa-eye fa-2x"></i></a></th>
+                          <th colspan=".5"><a href="#" class="btn btn-primary btn-circle" role="button"><i class="fas fa-cog"></i></a></th>
                           <?php 
                           if ($row['user_role_id'] == 100) 
                           {
@@ -302,7 +293,7 @@
                           }
                           else
                           {
-                            echo "<th><a href='#' class='btn btn-danger' role='button'><i class='fas fa-times'></i></a></th>";
+                            echo "<th colspan='1'><a href='../process/delete_user.php?userid=". $row['user_id'] ."' class='btn btn-danger btn-circle' role='button'><i class='fas fa-trash'></i></a></th>";
                           }
                           ?>
                         </tr>
@@ -327,7 +318,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; TodoList 2019</span>
           </div>
         </div>
       </footer>

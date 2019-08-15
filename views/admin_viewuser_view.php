@@ -29,12 +29,12 @@
         <!-- Custom styles for this template-->
         <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     </head>
-    <body id="page-top">
+    <body id="page-top ">
         <!-- Page Wrapper -->
   <div id="wrapper">
 
 <!-- Content Wrapper -->
-<div id="content-wrapper" class="d-flex flex-column">
+<div id="content-wrapper" class="d-flex flex-column bg-gradient-secondary">
 
   <!-- Main Content -->
   <div id="content">
@@ -46,26 +46,21 @@
       <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
       </button>
+      <i class="fas fa-dashboard fa-lg"></i>
+        <a href="../views/admin_view.php">
+            <h3 class="text-gray-600"> &larr; Dashboard</h3>
+          </a>
 
       <!-- Topbar Navbar -->
       <ul class="navbar-nav ml-auto">
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
           <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hello, <?php echo $_SESSION['username']; ?></span>
-            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 text-uppercase"><?php echo $_SESSION['username']; ?></span>
+            <img class="img-profile rounded-circle" src="../res/admin.png">
           </a>
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="#">
-              <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-              Profile
-            </a>
-            <a class="dropdown-item" href="#">
-              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Settings
-            </a>
-            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
               <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
               Logout
@@ -133,7 +128,7 @@
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary"><?php echo $row['todo_title']; ?></h6>
+                  <h6 class="m-0 font-weight-bold text-primary text-uppercase"><?php echo $row['todo_title']; ?></h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -148,8 +143,31 @@
                   </div>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body">
-                  <?php echo $row['todo_description']; ?>
+                <div class="card-body text-gray-900">
+                  <h5><?php echo $row['todo_description']; ?></h5>
+                  <br><br>
+                  <?php  
+                    $resultlist = getList($row['todo_id']);
+                    if ($resultlist->num_rows > 0)
+                    {
+                      echo "<i>List:</i> <br>";
+                      while ($listrow = $resultlist->fetch_assoc())
+                      {
+
+                        if ($listrow['list_status'] == "inprogress")
+                        {
+                          
+                          echo "<a href='../process/list_done.php?listid=". $listrow['list_id'] ."'><i class='far fa-clipboard fa-2x text-gray-300'></i></a>";
+                          echo "<u>". $listrow['list_name'] ."</u><br>";
+                        }
+                        else
+                        {
+                          echo "<i class='fas fa-clipboard-check fa-2x text-gray-300' style='color:green;'></i>";
+                          echo "<u>". $listrow['list_name'] ."</u><br>";
+                        }
+                      }
+                    }
+                  ?>
                   <hr/>
                     <div class="row">
                       <div class="col-lg-10">
@@ -169,7 +187,7 @@
             
             <div class="col-lg-4">
             <div class="">
-              <div class="card border-left-info shadow h-100 py-2">
+              <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -196,7 +214,7 @@
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary"><?php echo $row['todo_title']; ?></h6>
+                  <h6 class="m-0 font-weight-bold text-primary text-uppercase"><?php echo $row['todo_title']; ?></h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -211,15 +229,47 @@
                   </div>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body">
-                  <?php echo $row['todo_description']; ?>
+                <div class="card-body text-gray-900">
+                  <h5><?php echo $row['todo_description']; ?></h5>
+                    <br><br>
+                    <?php  
+                      $resultlist = getList($row['todo_id']);
+                    if ($resultlist->num_rows > 0)
+                    {
+                      echo "<i class='text-gray-400'>List:</i> <br>";
+                      while ($listrow = $resultlist->fetch_assoc())
+                      {
+
+                        if ($listrow['list_status'] == "inprogress")
+                        {
+                          
+                          echo "<a href='../process/list_done.php?listid=". $listrow['list_id'] ."'><i class='far fa-clipboard fa-2x text-gray-200'></i></a>";
+                          echo "<u>". $listrow['list_name'] ."</u><br>";
+                        }
+                        else
+                        {
+                          echo "<i class='fas fa-clipboard-check fa-2x text-gray-300''></i>";
+                          echo "<u>". $listrow['list_name'] ."</u><br>";
+                        }
+                      }
+                    }
+                    ?>
                     <hr/>
                     <div class="row">
                       <div class="col-lg-10">
                         <a href="../process/todo_backlog.php?todoid=<?php echo $row['todo_id']; ?>" class="btn btn-primary" role="button"> << </a>
                       </div>
                       <div class="col-lg-2">
-                        <a href="../process/todo_done.php?todoid=<?php echo $row['todo_id']; ?>" class="btn btn-primary" role="button"> >> </a>
+                        <?php
+                          if (checkAllList($row['todo_id']))
+                          {
+                            echo "<a href='../process/todo_done.php?todoid=". $row['todo_id'] ."' class='btn btn-primary' role='button'> >> </a>";
+                          }
+                          else
+                          {
+                            echo "<a class='btn btn-warning' role='button'> >> </a>";
+                          }
+                        ?>
                       </div>
                     </div>
                 </div>
@@ -233,7 +283,7 @@
 
               <div class="col-lg-4">
                 <div class="">
-                <div class="card border-left-info shadow h-100 py-2">
+                <div class="card border-left-success shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-2">
@@ -256,7 +306,7 @@
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary"><?php echo $row['todo_title']; ?></h6>
+                  <h6 class="m-0 font-weight-bold text-primary text-uppercase"><?php echo $row['todo_title']; ?></h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -271,8 +321,26 @@
                   </div>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body">
-                  <?php echo $row['todo_description']; ?>
+                <div class="card-body text-gray-900">
+                  <h5><?php echo $row['todo_description']; ?></h5>
+                  <br><br>
+                    <?php  
+                      $resultlist = getList($row['todo_id']);
+                      if ($resultlist->num_rows > 0)
+                      {
+                        echo "<i>List:</i> <br>";
+                        while ($listrow = $resultlist->fetch_assoc())
+                        {
+
+                          if ($listrow['list_status'] == "done")
+                          {
+                            
+                            echo "<a href='../process/list_done.php?listid=". $listrow['list_id'] ."'><i class='fas fa-clipboard-check fa-2x text-gray-300' style='color:green;'></i></a>";
+                            echo "<u>". $listrow['list_name'] ."</u><br>";
+                          }
+                        }
+                      }
+                    ?>
                   <hr/>
                     <div class="row">
                       <div class="col-lg-10">
@@ -283,7 +351,26 @@
               </div>
 
                 <?php } ?>
+                <div class="row mb-10">
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br><br>
+                      <br>
+                      <br>
 
+                </div>
               </div>
             </div> 
             </div>  
@@ -292,16 +379,15 @@
         
         
     </div>
-    <!-- /.container-fluid -->
 
   </div>
   <!-- End of Main Content -->
 
   <!-- Footer -->
-  <footer class="sticky-footer bg-white">
+  <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
     <div class="container my-auto">
       <div class="copyright text-center my-auto">
-        <span>Copyright &copy; Your Website 2019</span>
+        <span>Copyright &copy; TodoList 2019</span>
       </div>
     </div>
   </footer>

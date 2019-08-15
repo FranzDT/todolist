@@ -18,10 +18,9 @@
                 $vkey = md5(time().$username);
                 if (registerUser($email, $username, $password, $vkey))
                 {
-                    if (sendVerificationCode($email, $vkey))
-                    {
-                        $_SESSION['action_message'] = "Successfully added user";
-                    }
+                    sendVerificationCode($email, $vkey);
+                    $_SESSION['register'] = "Successfully registered, please confirm your email";
+                    header("Location: ../views/user_view.php");
                 }
                 else
                 {

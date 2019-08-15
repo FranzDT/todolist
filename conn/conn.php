@@ -1,6 +1,6 @@
 <?php
     $servername = "localhost";
-    $db = "todolist";
+    $db = "todo";
     $username = "root";
     $password = "";
 

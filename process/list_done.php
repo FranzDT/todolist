@@ -4,9 +4,8 @@
 
     if (isset($_GET['listid']))
     {
-        if (listDone($_GET['list_id']))
-        {
-            
+        if (listDone($_GET['listid']))
+        {     
             $_SESSION['action_message']="Update successful";
         }
         else

@@ -101,15 +101,13 @@
             //content
             $mail->isHTML(true); // Set email format to HTML
             $mail->Subject='Todolist Email Verification';
-            $mail->Body="<a href='http://localhost/todolist/process/verification_process.php?vkey=$vkey'> Confirm Account</a>";
+            $mail->Body="<a href='http://localhost:8080/todolist/process/verification_process.php?vkey=$vkey'> Confirm Account</a>";
             $mail->AltBody='This is the body in plain text for non-HTML mail clients';
 
             $mail->send();
-
-            return true;
         } 
         catch(Exception $e) {
-            return false;
+            
         }
 
     }
@@ -180,6 +178,7 @@
             $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['user_role_id'] = $row['user_role_id'];
+            $_SESSION['email'] = $row['email'];
         }
         $signin = "UPDATE users SET last_signin = (SELECT CURRENT_TIMESTAMP()) WHERE username = '$username'";
         $GLOBALS['conn']->query($signin);
@@ -340,6 +339,37 @@
     function listDone($list_id)
     {
         $sql="UPDATE list SET list_status = 'done' WHERE list_id = $list_id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function checkAllList($todo_id)
+    {
+        $sql = "SELECT list_id FROM list WHERE list_status = 'inprogress' AND todo_id = $todo_id";
+        if ($GLOBALS['conn']->query($sql)->num_rows == 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    function editUser($username, $email)
+    {
+        $id = $_SESSION['user_id'];
+        $sql = "UPDATE users SET username = '$username', email = '$email' WHERE user_id = $id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function changePassword($password)
+    {
+        $id = $_SESSION['user_id'];
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "UPDATE users SET password = '$password' WHERE user_id = $id";
+        return $GLOBALS['conn']->query($sql);
+    }
+
+    function deleteUser($user_id)
+    {
+        $sql = "DELETE FROM users WHERE user_id = $user_id";
         return $GLOBALS['conn']->query($sql);
     }
 ?>

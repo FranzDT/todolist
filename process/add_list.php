@@ -31,10 +31,9 @@
 
             if (addList($list_name))
             {   
-                die("here");
                 if ($_SESSION['user_role_id'] == 100)
                 {
-                    header("Location: ../views/admin_viewuser_view");
+                    header("Location: ../views/admin_viewuser_view.php");
                 }
                 else
                 {
