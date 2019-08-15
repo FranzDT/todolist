@@ -1,3 +1,9 @@
+Set-up:
+•Import the database
+•Change the email redirect in ../functions/functions.php
+ "$mail->Body="<a href='http://localhost:8080/todolist/process/verification_process.php?vkey=$vkey'>"
+
+
 # **TODO APP**
 >Todo app is used for creating tasks for the user. Each todo status are categorized by the following: backlog, in progress and done.
 
@@ -23,6 +29,14 @@ ____
 • Then the user will be asked for the title and description of the task.
 
 • Newly added tasks gets the backlog status.
+
+## *Add List*
+• Allows the user to have additional sub tasks
+
+• Must complete all list to complete a todo
+
+• List cannot be edited but can be completed.
+
 ![](res/plusicon.png)
 ![](res/addtodo.png)
 ## *Todo Status*
