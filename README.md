@@ -58,3 +58,15 @@ ____
 • Delete todo by clicking the X mark on each todo card.
 ![](res/deletetodo.png)
 ![](res/deletetodo2.png)
+
+-----
+
+# **App Process - Admin**
+## *Delete Users*
+
+## *Add User*
+
+## *Update User*
+
+## *View User Todo*
+• Admin can also edit, add and delete the user's todo
