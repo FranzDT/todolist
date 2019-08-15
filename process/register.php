@@ -53,4 +53,8 @@
             header("Location: ../views/register_view.php");
         }
     }
+    else
+    {   
+        header("Location: ../views/register_view.php");
+    }
 ?>

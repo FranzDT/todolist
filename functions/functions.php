@@ -370,6 +370,26 @@
     function deleteUser($user_id)
     {
         $sql = "DELETE FROM users WHERE user_id = $user_id";
-        return $GLOBALS['conn']->query($sql);
+        $GLOBALS['conn']->query($sql);
+    }
+
+    function adminSetUser($user_id)
+    {
+        $sql = "SELECT user_id, email, username, email_verify FROM users WHERE user_id = $user_id";
+        $result = $GLOBALS['conn']->query($sql);
+        while ($row = $result->fetch_assoc())
+        {
+            $_SESSION['edit_user_id'] = $row['user_id'];
+            $_SESSION['edit_user_email'] = $row['email'];
+            $_SESSION['edit_user_username'] = $row['username'];
+            $_SESSION['edit_user_email_verify'] = $row['email_verify'];
+        }
+    }
+
+    function adminEditUser($username, $email, $email_verify)
+    {
+        $id = $_SESSION['edit_user_id'];
+        $sql = "UPDATE users SET username ='$username', email = '$email', email_verify = $email_verify WHERE user_id = $id";
+        $GLOBALS['conn']->query($sql);
     }
 ?>

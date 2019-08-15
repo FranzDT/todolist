@@ -11647,7 +11647,7 @@ a:focus {
 }
 
 .bg-register-image {
-  background: url("../res/default.jpg");
+  background: url("../res/reg.png");
   background-position: center;
   background-size: cover;
 }

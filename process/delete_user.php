@@ -5,10 +5,7 @@
 
     if (isset($_GET['userid']))
     {
-        
+        deleteUser($_GET['userid']);
     }
-    else
-    {
-        header("Location: ../views/admin_view.php");
-    }
+    header("Location: ../views/admin_view.php");
 ?>

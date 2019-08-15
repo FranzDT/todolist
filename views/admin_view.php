@@ -38,6 +38,20 @@
   <!-- Custom styles for this template-->
   <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 
+  <?php
+    if (isset($_SESSION['edit_user_email']))
+    {
+  ?>
+      <script type="text/javascript">
+        $(window).on('load',function(){
+            $('#editUserModal').modal('show');
+        });
+      </script>
+
+  <?php
+    }
+  ?>
+
 </head>
 
 <body id="page-top">
@@ -285,7 +299,7 @@
                           <th><?php echo $row['created_date']; ?></th>
                           <th><?php echo $row['last_signin']; ?></th>
                           <th><a href="../process/admin_viewuser.php?userid=<?php echo $row['user_id']; ?>" ><i class="fas fa-eye fa-2x"></i></a></th>
-                          <th colspan=".5"><a href="#" class="btn btn-primary btn-circle" role="button"><i class="fas fa-cog"></i></a></th>
+                          <th colspan=".5"><a href="../process/admin_edit_user.php?userid=<?php echo $row['user_id'] ?>" class="btn btn-primary btn-circle" role="button"><i class="fas fa-cog"></i></a></th>
                           <?php 
                           if ($row['user_role_id'] == 100) 
                           {
@@ -353,6 +367,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="../vendor/jquery/jquery.min.js"></script>
